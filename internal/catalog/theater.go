@@ -34,5 +34,8 @@ type TheaterRepository interface {
 	GetByID(id string) (*Theater, error)
 	GetScreen(screenID string) (*Screen, error)
 	List() ([]Theater, error)
+	Save(theater *Theater) error
+	AddScreenToTheater(theaterID string, screen *Screen) error
 	AddSeatToScreen(screenID string, seat *Seat) (*Screen, error)
 }
+// why is AddSeatToScreen returning *Screen but AddScreenToTheater only returning error.
