@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (user && !loading) {
+      if (user.role === 'admin') {
+        navigate('/admin/theaters');
+      } else {
+        navigate('/user/dashboard');
+      }
+    }
+  }, [user, loading, navigate]);
+
+  const handleLogin = (role) => {
+    window.location.href = `/auth/google/login?role=${role}`;
+  };
+
+  if (loading) {
+    return <div className="center" style={{ height: '100vh' }}>Loading...</div>;
+  }
 
   return (
     <div className="center" style={{ height: '100vh', flexDirection: 'column' }}>
@@ -11,28 +31,16 @@ const Landing = () => {
         <button 
           className="btn" 
           style={{ fontSize: '1.25rem', padding: '1rem 3rem' }}
-          onClick={() => {
-            const adminId = prompt("Enter your Admin ID:");
-            if (adminId) {
-              localStorage.setItem('admin_id', adminId);
-              navigate('/admin/theaters');
-            }
-          }}
+          onClick={() => handleLogin('admin')}
         >
-          Enter as Admin
+          Login as Admin
         </button>
         <button 
           className="btn btn-outline" 
           style={{ fontSize: '1.25rem', padding: '1rem 3rem' }}
-          onClick={() => {
-            const userId = prompt("Enter your User ID:");
-            if (userId) {
-              localStorage.setItem('user_id', userId);
-              navigate('/user/dashboard');
-            }
-          }}
+          onClick={() => handleLogin('user')}
         >
-          Enter as User
+          Login as User
         </button>
       </div>
     </div>

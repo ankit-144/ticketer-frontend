@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchMovies, fetchShowsForMovie, addShow, updateShow, deleteShow } from '../../api';
+import { fetchMovies, listTheatersByAdmin, getScreens, getShowsByTheater, addShow, updateShow, deleteShow } from '../../api';
+import { useAuth } from '../../components/AuthContext';
 import PlayCard from '../../components/PlayCard';
 import Modal from '../../components/Modal';
 
 const ShowsAdminView = () => {
+  const { user } = useAuth();
   const [movies, setMovies] = useState([]);
   const [selectedMovieId, setSelectedMovieId] = useState('');
   const [shows, setShows] = useState([]);
@@ -21,7 +23,7 @@ const ShowsAdminView = () => {
     });
     
     // Fetch all screens for dropdown
-    const adminId = localStorage.getItem('admin_id');
+    const adminId = user?.id || 'admin-123';
     if (adminId) {
       import('../../api').then(({ listTheatersByAdmin }) => {
         listTheatersByAdmin(adminId).then(theaters => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listTheatersByAdmin, addTheater, updateTheater, deleteTheater } from '../../api';
+import { useAuth } from '../../components/AuthContext';
 import PlayCard from '../../components/PlayCard';
 import Modal from '../../components/Modal';
 
@@ -11,7 +12,8 @@ const TheatersView = () => {
   const [formData, setFormData] = useState({ name: '', location: '' });
   const [editingId, setEditingId] = useState(null);
   
-  const adminId = localStorage.getItem('admin_id');
+  const { user } = useAuth();
+  const adminId = user?.id || 'admin-123';
   const navigate = useNavigate();
 
   const fetchList = () => {

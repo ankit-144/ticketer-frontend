@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cancelBooking, fetchUserBookings, getShow, fetchMovie, fetchAvailableSeats } from '../../api';
+import { useAuth } from '../../components/AuthContext';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   const loadBookings = async () => {
     try {
       setLoading(true);
-      const userId = localStorage.getItem('user_id') || 'user-123';
+      const userId = user?.id || 'user-123';
       const rawBookings = await fetchUserBookings(userId);
       
       // Hydrate bookings with movie titles and seat labels

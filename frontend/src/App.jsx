@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './components/AuthContext';
 import './index.css';
 import './App.css';
 
@@ -24,32 +25,34 @@ import ThankYouPage from './pages/user/ThankYouPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Navigate to="theaters" />} />
-          <Route path="theaters" element={<TheatersView />} />
-          <Route path="theaters/:theaterId/screens" element={<ScreensView />} />
-          <Route path="screens/:screenId/seats" element={<SeatsView />} />
-          <Route path="movies" element={<MoviesAdminView />} />
-          <Route path="shows" element={<ShowsAdminView />} />
-        </Route>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="theaters" />} />
+            <Route path="theaters" element={<TheatersView />} />
+            <Route path="theaters/:theaterId/screens" element={<ScreensView />} />
+            <Route path="screens/:screenId/seats" element={<SeatsView />} />
+            <Route path="movies" element={<MoviesAdminView />} />
+            <Route path="shows" element={<ShowsAdminView />} />
+          </Route>
 
-        {/* User Routes */}
-        <Route path="/user" element={<UserLayout />}>
-          <Route index element={<Navigate to="dashboard" />} />
-          <Route path="dashboard" element={<UserDashboard />} />
-          <Route path="movies" element={<UserMovies />} />
-          <Route path="movies/:movieId/shows" element={<UserShows />} />
-          <Route path="shows/:showId/seats" element={<UserSeatMap />} />
-          <Route path="payment/:bookingId" element={<PaymentPage />} />
-          <Route path="thank-you" element={<ThankYouPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          {/* User Routes */}
+          <Route path="/user" element={<UserLayout />}>
+            <Route index element={<Navigate to="dashboard" />} />
+            <Route path="dashboard" element={<UserDashboard />} />
+            <Route path="movies" element={<UserMovies />} />
+            <Route path="movies/:movieId/shows" element={<UserShows />} />
+            <Route path="shows/:showId/seats" element={<UserSeatMap />} />
+            <Route path="payment/:bookingId" element={<PaymentPage />} />
+            <Route path="thank-you" element={<ThankYouPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
