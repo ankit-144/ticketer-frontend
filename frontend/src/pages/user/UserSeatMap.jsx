@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchAvailableSeats, initiateBooking, getShow, getSeats } from '../../api';
+import { useAuth } from '../../components/AuthContext';
 
 const UserSeatMap = () => {
   const { showId } = useParams();
@@ -11,6 +12,7 @@ const UserSeatMap = () => {
   const [loading, setLoading] = useState(true);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const loadSeatMap = async () => {
@@ -58,8 +60,8 @@ const UserSeatMap = () => {
     if (selectedSeats.length === 0) return;
     setBookingLoading(true);
     try {
-      const userId = localStorage.getItem('user_id') || 'user-123';
-      const booking = await initiateBooking(showId, selectedSeats, userId);
+      const userId = user?.id || 'user-123';
+      const booking = await initiateBooking(showId, Array.from(selectedSeats), userId);
       // The pricing service on the backend calculated the true price
       navigate(`/user/payment/${booking.id}`, { state: { amount: booking.price, seats: selectedSeats } });
     } catch (err) {
