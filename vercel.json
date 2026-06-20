@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://ticketer-api-650944551196.asia-south1.run.app/api/:path*"
+      "destination": "https://ticketer-backend-650944551196.europe-west1.run.app/api/:path*"
     },
     {
       "source": "/auth/:path*",
-      "destination": "https://ticketer-api-650944551196.asia-south1.run.app/auth/:path*"
+      "destination": "https://ticketer-backend-650944551196.europe-west1.run.app/auth/:path*"
     },
     {
       "source": "/(.*)",
